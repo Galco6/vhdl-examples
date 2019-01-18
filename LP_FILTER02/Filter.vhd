@@ -63,6 +63,7 @@ constant COEFF: MATRIZ := ( to_unsigned(24, 12),
                             to_unsigned(75, 12),
                             to_unsigned(24, 12)
                             );
+constant TAPS: INTEGER:= 19;                                                        
 signal DATA: MATRIZ;
 signal START_FLAG: STD_LOGIC;
 signal COUNT: integer range 0 to 20; --Señal interna que representa al contador
@@ -81,17 +82,17 @@ begin
         end loop;
     elsif (CLK'event and CLK = '1') then       
         if START_I = '1' and COUNT = 0 then           
-            for I in 0 to 17 loop
+            for I in 0 to TAPS - 2 loop
                 DATA(I + 1) <= DATA(I);
             end loop;            
             DATA(0) <= unsigned(DATA_I (11 downto 0));
             RESULT := (others => '0');
             COUNT <= COUNT + 1;
         elsif (START_I = '1' and COUNT > 0) or START_I = '0' then
-            if COUNT = 20 then
+            if COUNT = TAPS + 1 then
                 DATA_O <= "0000" & std_logic_vector(RESULT(23 downto 12));
                 COUNT <= 0;
-            elsif COUNT > 0 and COUNT < 20 then
+            elsif COUNT > 0 and COUNT < TAPS + 1 then
                 RESULT := RESULT + (COEFF(COUNT-1)*DATA(COUNT-1));
                 COUNT <= COUNT + 1;
             end if;
