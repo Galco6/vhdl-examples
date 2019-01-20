@@ -79,4 +79,6 @@ begin
                 CAS <= '0';
         end case;
     end process;
+
+end Behavioral;
     
