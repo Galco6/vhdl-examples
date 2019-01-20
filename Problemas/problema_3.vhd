@@ -41,8 +41,7 @@ begin
             if RESET = '1' then
                 STATE <= STATE0;
                 N = '0';
-            else
-                
+            else               
                 case STATE is 
                     when STATE0 =>
                         if START = '0' then
